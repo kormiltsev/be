@@ -1,0 +1,14 @@
+FROM golang:1.23.6-bullseye AS builder
+
+RUN apt-get update && apt-get install -y gcc-aarch64-linux-gnu
+
+ADD . /be
+WORKDIR /be
+RUN CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=arm64 go build -o ./be-arm64 .
+
+FROM debian:bullseye-slim
+
+WORKDIR /
+EXPOSE 8080
+COPY --from=builder /be/be-arm64 .
+CMD ["/be-arm64", "--debug", "run"]
