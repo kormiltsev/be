@@ -1,0 +1,299 @@
+swagger: "2.0"
+info:
+    title: RENAMEME
+    description: RESTful API for handling RENAMEME.
+    version: "1.0"
+host: localhost:8080
+basePath: /renameme
+consumes:
+    - application/json
+    - application/xml
+    - application/gob
+produces:
+    - application/json
+    - application/xml
+    - application/gob
+paths:
+    /items:
+        get:
+            tags:
+                - items
+            summary: Return list of items
+            description: Return list of all items
+            operationId: items#list
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        $ref: '#/definitions/RenamemeItems'
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/BadRequestError'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/InternalError'
+            schemes:
+                - https
+        post:
+            tags:
+                - items
+            summary: Create new item
+            operationId: items#create
+            parameters:
+                - name: CreateRequestBody
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/ItemsCreateRequestBody'
+                    required:
+                        - item
+            responses:
+                "200":
+                    description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/BadRequestError'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/InternalError'
+            schemes:
+                - https
+    /items/{id}:
+        delete:
+            tags:
+                - items
+            summary: Delete item
+            operationId: items#delete
+            parameters:
+                - name: id
+                  in: path
+                  description: Item ID
+                  required: true
+                  type: string
+            responses:
+                "204":
+                    description: No Content response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/BadRequestError'
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/NotFoundError'
+                "500":
+                    description: Internal Server Error response.
+                    schema:
+                        $ref: '#/definitions/InternalError'
+            schemes:
+                - https
+    /version:
+        get:
+            tags:
+                - version
+            summary: Get renameme version
+            operationId: version#version
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: OK response.
+                    schema:
+                        $ref: '#/definitions/RenamemeVersion'
+            schemes:
+                - https
+definitions:
+    ApplicationVndRenamemeItemJSON:
+        title: ApplicationVndRenamemeItemJSON
+        type: object
+        properties:
+            description:
+                type: string
+                description: Item description
+                example: Omnis libero magni officiis eum nesciunt.
+            icon:
+                type: string
+                description: Application icon in base64 format
+                example: Aut architecto soluta.
+            id:
+                type: string
+                description: Item identifier
+                example: Unde placeat iure aut.
+            labels:
+                type: array
+                items:
+                    type: string
+                    example: Iusto neque dolorem placeat repellat deleniti qui.
+                description: Item labels
+                example:
+                    - Nihil fuga doloremque omnis fuga.
+                    - Necessitatibus a aut doloremque sit sunt voluptates.
+                    - Quisquam aut et aspernatur est.
+            name:
+                type: string
+                description: Item name
+                example: "44"
+                minLength: 1
+                maxLength: 255
+        example:
+            description: Qui cum.
+            icon: Quae mollitia.
+            id: Expedita et ut ut eum.
+            labels:
+                - Amet blanditiis voluptas autem sint incidunt.
+                - Provident at modi ad quia voluptatem.
+            name: o
+        required:
+            - name
+    BadRequestError:
+        title: 'Mediatype identifier: application/vnd.bad.request.error+json; view=default'
+        type: object
+        properties:
+            attributes:
+                type: string
+                example: Architecto nam.
+            msg:
+                type: string
+                example: Dolore explicabo laborum id.
+            msgCode:
+                type: string
+                example: Illum molestiae aut unde laudantium.
+        description: is a common error response for bad request (default view)
+        example:
+            attributes: Et aliquid quo ex asperiores.
+            msg: Rem vel recusandae quasi fugiat debitis velit.
+            msgCode: Hic dignissimos et voluptates consequuntur.
+        required:
+            - msg
+            - msgCode
+    InternalError:
+        title: 'Mediatype identifier: application/vnd.internal.error+json; view=default'
+        type: object
+        properties:
+            attributes:
+                type: string
+                example: Sed sit beatae aut quasi recusandae autem.
+            msg:
+                type: string
+                example: Aliquid est nihil.
+            msgCode:
+                type: string
+                example: Quidem natus dignissimos non.
+        description: is a common error response for internal error (default view)
+        example:
+            attributes: Voluptatum ut doloremque.
+            msg: Libero numquam ducimus.
+            msgCode: Quo atque veritatis voluptas.
+        required:
+            - msg
+            - msgCode
+    ItemsCreateRequestBody:
+        title: ItemsCreateRequestBody
+        type: object
+        properties:
+            item:
+                $ref: '#/definitions/ApplicationVndRenamemeItemJSON'
+        example:
+            item:
+                description: Modi ratione assumenda.
+                icon: Est voluptas quisquam cupiditate.
+                id: Voluptatibus explicabo deleniti aut quos.
+                labels:
+                    - Ea magnam occaecati illo reprehenderit.
+                    - Ipsa doloremque voluptatem voluptatum provident.
+                name: dy
+        required:
+            - item
+    NotFoundError:
+        title: 'Mediatype identifier: application/vnd.not.found.error+json; view=default'
+        type: object
+        properties:
+            attributes:
+                type: string
+                example: Sunt consequatur recusandae rerum tempora quam et.
+            msg:
+                type: string
+                example: Sunt et quidem.
+            msgCode:
+                type: string
+                example: Quasi porro et praesentium et id.
+        description: is a common error response for not found (default view)
+        example:
+            attributes: Ratione ullam.
+            msg: Eos harum accusantium magni et rem aut.
+            msgCode: Veniam placeat non.
+        required:
+            - msg
+            - msgCode
+    RenamemeItems:
+        title: 'Mediatype identifier: application/vnd.renameme.items+json; view=default'
+        type: object
+        properties:
+            items:
+                type: array
+                items:
+                    $ref: '#/definitions/ApplicationVndRenamemeItemJSON'
+                description: Items collection
+                example:
+                    - description: Cumque pariatur ea.
+                      icon: Quasi pariatur aut.
+                      id: Et voluptas labore beatae accusamus aut.
+                      labels:
+                        - Quibusdam molestiae ut dolorum hic dolores laudantium.
+                        - Expedita nam corrupti aut sint voluptas.
+                      name: gwo
+                    - description: Cumque pariatur ea.
+                      icon: Quasi pariatur aut.
+                      id: Et voluptas labore beatae accusamus aut.
+                      labels:
+                        - Quibusdam molestiae ut dolorum hic dolores laudantium.
+                        - Expedita nam corrupti aut sint voluptas.
+                      name: gwo
+                    - description: Cumque pariatur ea.
+                      icon: Quasi pariatur aut.
+                      id: Et voluptas labore beatae accusamus aut.
+                      labels:
+                        - Quibusdam molestiae ut dolorum hic dolores laudantium.
+                        - Expedita nam corrupti aut sint voluptas.
+                      name: gwo
+        description: ListResponseBody result type (default view)
+        example:
+            items:
+                - description: Cumque pariatur ea.
+                  icon: Quasi pariatur aut.
+                  id: Et voluptas labore beatae accusamus aut.
+                  labels:
+                    - Quibusdam molestiae ut dolorum hic dolores laudantium.
+                    - Expedita nam corrupti aut sint voluptas.
+                  name: gwo
+                - description: Cumque pariatur ea.
+                  icon: Quasi pariatur aut.
+                  id: Et voluptas labore beatae accusamus aut.
+                  labels:
+                    - Quibusdam molestiae ut dolorum hic dolores laudantium.
+                    - Expedita nam corrupti aut sint voluptas.
+                  name: gwo
+    RenamemeVersion:
+        title: 'Mediatype identifier: application/vnd.renameme.version+json; view=default'
+        type: object
+        properties:
+            git:
+                type: string
+                description: Git commit hash
+                example: cd243db4
+            version:
+                type: string
+                description: Software version
+                example: 1.2.3
+        description: VersionResponseBody result type (default view)
+        example:
+            git: cd243db4
+            version: 1.2.3
+        required:
+            - version
